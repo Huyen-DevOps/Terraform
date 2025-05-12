@@ -41,6 +41,10 @@ module "vpc" {
   map_public_ip_on_launch       = var.map_public_ip_on_launch
   route_table_public_tags_name  = var.route_table_public_tags_name
   route_table_private_tags_name = var.route_table_private_tags_name
+
+  nat_instance_ami = var.nat_instance_ami
+  key_name         = var.key_name
+  name_prefix      = var.name_prefix
 }
 
 module "alb" {
@@ -84,4 +88,28 @@ module "alb" {
   ec2_sg_egress_to_port     = var.ec2_sg_egress_to_port
   ec2_sg_egress_protocol    = var.ec2_sg_egress_protocol
   ec2_sg_egress_cidr_blocks = var.ec2_sg_egress_cidr_blocks
+}
+
+module "ec2" {
+  source                = "./modules/ec2"
+  ami_id                = var.ami_id
+  instance_type         = var.instance_type
+  private_subnets       = module.vpc.private_subnets
+  vpc_id                = module.vpc.vpc_id
+  alb_security_group_id = module.alb.alb_security_group_id
+  name_prefix           = var.name_prefix
+  desired_capacity      = var.desired_capacity
+  max_size              = var.max_size
+  min_size              = var.min_size
+  propagate_at_launch   = var.propagate_at_launch
+  target_group_arns     = module.alb.target_group_arns
+
+  ec2_sg_md_listener_from_port = var.ec2_sg_md_listener_from_port
+  ec2_sg_md_listener_to_port   = var.ec2_sg_md_listener_to_port
+  ec2_sg_md_listener_protocol  = var.ec2_sg_md_listener_protocol
+
+  ec2_sg_md_egress_from_port   = var.ec2_sg_md_egress_from_port
+  ec2_sg_md_egress_to_port     = var.ec2_sg_md_egress_to_port
+  ec2_sg_md_egress_protocol    = var.ec2_sg_md_egress_protocol
+  ec2_sg_md_egress_cidr_blocks = var.ec2_sg_md_egress_cidr_blocks
 }

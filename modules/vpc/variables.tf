@@ -16,3 +16,10 @@ variable "aws_internet_gateway_tags_name" {}
 variable "route_table_public_tags_name" {}
 variable "route_table_private_tags_name" {}
 variable "destination_cidr_block" {}
+
+variable "nat_instance_ami" {}
+
+variable "key_name" {}
+
+variable "name_prefix" {}
+

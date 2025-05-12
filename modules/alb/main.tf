@@ -25,6 +25,16 @@ resource "aws_lb_target_group" "target_group" {
   protocol    = var.target_group_protocol
   vpc_id      = var.vpc_id
   target_type = var.target_type
+
+  health_check {
+    path                = "/"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
 }
 
 resource "aws_security_group" "alb_sg" {

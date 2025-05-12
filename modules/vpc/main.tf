@@ -107,3 +107,53 @@ resource "aws_route_table_association" "private_b" {
   subnet_id      = aws_subnet.private_b.id
   route_table_id = aws_route_table.private.id
 }
+
+# Create a NAT Instance
+resource "aws_instance" "nat_instance" {
+  ami                         = var.nat_instance_ami
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public_a.id
+  associate_public_ip_address = true
+  source_dest_check           = false
+  key_name                    = var.key_name
+
+  vpc_security_group_ids = [aws_security_group.nat_sg.id]
+
+  user_data = <<-EOF
+              #!/bin/bash
+              echo 1 > /proc/sys/net/ipv4/ip_forward
+              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+              EOF
+
+  tags = {
+    Name = "${var.name_prefix}-nat-instance"
+  }
+}
+
+resource "aws_security_group" "nat_sg" {
+  name        = "${var.name_prefix}-nat-sg"
+  description = "Allow outbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = [var.private_subnets[0], var.private_subnets[1]]
+  }
+}
+
+resource "aws_route" "private_nat_route" {
+  route_table_id         = aws_route_table.private.id
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id   = aws_instance.nat_instance.primary_network_interface_id
+
+  depends_on = [aws_instance.nat_instance]
+}

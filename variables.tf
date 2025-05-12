@@ -285,3 +285,93 @@ variable "ec2_sg_egress_cidr_blocks" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "ami_id" {
+  description = "AMI ID for the EC2 instance"
+  type        = string
+  default     = "ami-075686beab831bb7f"
+}
+
+variable "instance_type" {
+  description = "Instance type for the EC2 instance"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "desired_capacity" {
+  description = "Desired capacity for the Auto Scaling group"
+  type        = number
+  default     = 2
+}
+
+variable "max_size" {
+  description = "Maximum size for the Auto Scaling group"
+  type        = number
+  default     = 5
+}
+
+variable "min_size" {
+  description = "Minimum size for the Auto Scaling group"
+  type        = number
+  default     = 2
+}
+
+variable "propagate_at_launch" {
+  description = "Whether to propagate the tag at launch"
+  type        = bool
+  default     = true
+}
+
+variable "ec2_sg_md_listener_from_port" {
+  description = "Starting port for the EC2 security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "ec2_sg_md_listener_to_port" {
+  description = "Ending port for the EC2 security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "ec2_sg_md_listener_protocol" {
+  description = "Protocol for the EC2 security group listener"
+  type        = string
+  default     = "tcp"
+}
+
+variable "ec2_sg_md_egress_from_port" {
+  description = "Starting port for the EC2 security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "ec2_sg_md_egress_to_port" {
+  description = "Ending port for the EC2 security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "ec2_sg_md_egress_protocol" {
+  description = "Protocol for the EC2 security group egress"
+  type        = string
+  default     = "-1"
+}
+
+variable "ec2_sg_md_egress_cidr_blocks" {
+  description = "CIDR blocks for the EC2 security group egress"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "nat_instance_ami" {
+  description = "AMI ID for the NAT instance"
+  type        = string
+  default     = "ami-075686beab831bb7f"
+}
+
+variable "key_name" {
+  description = "Name of the key pair to use for the NAT instance"
+  type        = string
+  default     = "nat-keypair"
+}
