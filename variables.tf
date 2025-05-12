@@ -7,13 +7,13 @@ variable "aws_region" {
 variable "access_key" {
   description = "AWS access key"
   type        = string
-  default   = ""
+  default     = ""
 }
 
 variable "secret_key" {
   description = "AWS secret key"
   type        = string
-  default   = ""
+  default     = ""
 }
 
 variable "public_subnets" {
@@ -104,4 +104,184 @@ variable "route_table_private_tags_name" {
   description = "The name tag for the private route table."
   type        = string
   default     = "Private Route Table"
+}
+
+variable "alb_name" {
+  description = "Name of the ALB"
+  type        = string
+  default     = "mini-alb"
+}
+
+variable "internal" {
+  description = "Whether the ALB is internal or internet-facing"
+  type        = bool
+  default     = false
+}
+
+variable "load_balancer_type" {
+  description = "Type of the load balancer (application or network)"
+  type        = string
+  default     = "application"
+}
+
+variable "enable_deletion_protection" {
+  description = "Enable deletion protection for the ALB"
+  type        = bool
+  default     = false
+}
+
+variable "listener_port" {
+  description = "Port for the ALB listener"
+  type        = number
+  default     = 80
+}
+
+variable "listener_protocol" {
+  description = "Protocol for the ALB listener"
+  type        = string
+  default     = "HTTP"
+}
+
+variable "default_action_type" {
+  description = "Type of the default action for the ALB listener"
+  type        = string
+  default     = "forward"
+}
+
+variable "target_group_port" {
+  description = "Port for the target group"
+  type        = number
+  default     = 80
+}
+
+variable "target_group_protocol" {
+  description = "Protocol for the target group"
+  type        = string
+  default     = "HTTP"
+}
+
+variable "target_type" {
+  description = "Type of the target group (instance, ip, or lambda)"
+  type        = string
+  default     = "instance"
+}
+
+variable "alb_sg_listener_from_port" {
+  description = "Starting port for the ALB security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "alb_sg_listener_to_port" {
+  description = "Ending port for the ALB security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "alb_sg_listener_protocol" {
+  description = "Protocol for the ALB security group listener"
+  type        = string
+  default     = "tcp"
+}
+
+variable "alb_sg_listener_cidr_blocks" {
+  description = "CIDR blocks for the ALB security group listener"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "alb_sg_listener_from_port_2" {
+  description = "Starting port for the ALB security group listener (second rule)"
+  type        = number
+  default     = 443
+}
+
+variable "alb_sg_listener_to_port_2" {
+  description = "Ending port for the ALB security group listener (second rule)"
+  type        = number
+  default     = 443
+}
+
+variable "alb_sg_listener_protocol_2" {
+  description = "Protocol for the ALB security group listener (second rule)"
+  type        = string
+  default     = "tcp"
+}
+
+variable "alb_sg_listener_cidr_blocks_2" {
+  description = "CIDR blocks for the ALB security group listener (second rule)"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "alb_sg_egress_from_port" {
+  description = "Starting port for the ALB security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "alb_sg_egress_to_port" {
+  description = "Ending port for the ALB security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "alb_sg_egress_protocol" {
+  description = "Protocol for the ALB security group egress"
+  type        = string
+  default     = "-1"
+}
+
+variable "alb_sg_egress_cidr_blocks" {
+  description = "CIDR blocks for the ALB security group egress"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "name_prefix" {
+  description = "Prefix for naming resources"
+  type        = string
+  default     = "mini-project"
+}
+
+variable "ec2_sg_listener_from_port" {
+  description = "Starting port for the EC2 security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "ec2_sg_listener_to_port" {
+  description = "Ending port for the EC2 security group listener"
+  type        = number
+  default     = 80
+}
+
+variable "ec2_sg_listener_protocol" {
+  description = "Protocol for the EC2 security group listener"
+  type        = string
+  default     = "tcp"
+}
+
+variable "ec2_sg_egress_from_port" {
+  description = "Starting port for the EC2 security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "ec2_sg_egress_to_port" {
+  description = "Ending port for the EC2 security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "ec2_sg_egress_protocol" {
+  description = "Protocol for the EC2 security group egress"
+  type        = string
+  default     = "-1"
+}
+
+variable "ec2_sg_egress_cidr_blocks" {
+  description = "CIDR blocks for the EC2 security group listener"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }

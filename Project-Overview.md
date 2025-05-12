@@ -31,15 +31,15 @@ terraform-3tier-project/
 
 ## What You'll Implement
 
-| **Component** | **Description** |
-|---------------|------------------|
-| **VPC**       | Create a custom VPC, 2 Availability Zones, 4 subnets, route tables |
-| **ALB**       | Public-facing Load Balancer forwarding traffic to EC2 instances |
+| **Component** | **Description**                                                            |
+|---------------|----------------------------------------------------------------------------|
+| **VPC**       | Create a custom VPC, 2 Availability Zones, 4 subnets, route tables         |
+| **ALB**       | Public-facing Load Balancer forwarding traffic to EC2 instances            |
 | **EC2**       | 2 instances using Amazon Linux AMI, running a web server (nginx or apache) |
-| **RDS**       | MySQL DB in private subnet, secured so only EC2 instances can access it |
-| **Modules**   | Split configurations into `modules/vpc`, `modules/ec2`, etc. |
-| **Variables** | Use variables for AMI, region, instance_type, DB password, etc. |
-| **Outputs**   | Output ALB public IP, RDS endpoint, etc. |
+| **RDS**       | MySQL DB in private subnet, secured so only EC2 instances can access it    |
+| **Modules**   | Split configurations into `modules/vpc`, `modules/ec2`, etc.               |
+| **Variables** | Use variables for AMI, region, instance_type, DB password, etc.            |
+| **Outputs**   | Output ALB public IP, RDS endpoint, etc.                                   |
 
 ---
 
