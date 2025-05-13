@@ -3,11 +3,12 @@ resource "aws_launch_template" "web" {
   image_id      = var.ami_id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.ec2_sg_md.id]
+  key_name      = var.key_name
 
   user_data = base64encode(<<-EOF
               #!/bin/bash
-              sudo apt update -y
-              sudo apt install -y nginx
+              sudo apt-get update -y
+              sudo apt-get install -y nginx
               sudo systemctl start nginx
               sudo systemctl enable nginx
               echo "Hello from EC2 instance" > /var/www/html/index.html
@@ -20,7 +21,7 @@ resource "aws_autoscaling_group" "web" {
   max_size             = var.max_size
   min_size             = var.min_size
   vpc_zone_identifier  = var.private_subnets
-  target_group_arns = var.target_group_arns
+  target_group_arns    = var.target_group_arns
 
   launch_template {
     id      = aws_launch_template.web.id
@@ -36,7 +37,7 @@ resource "aws_autoscaling_group" "web" {
 
 resource "aws_security_group" "ec2_sg_md" {
   name        = "${var.name_prefix}-ec2-sg-md"
-  description = "Allow traffic from ALB to EC2"
+  description = "Allow traffic from ALB to EC2 (EC2 module)"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -44,6 +45,20 @@ resource "aws_security_group" "ec2_sg_md" {
     to_port         = var.ec2_sg_md_listener_to_port
     protocol        = var.ec2_sg_md_listener_protocol
     security_groups = [var.alb_security_group_id]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"        # "all"
+    cidr_blocks = ["10.0.1.0/24", "10.0.2.0/24"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    security_groups = [var.aws_security_group_nat_sg]
   }
 
   egress {
@@ -54,6 +69,6 @@ resource "aws_security_group" "ec2_sg_md" {
   }
 
   tags = {
-    Name = "${var.name_prefix}-ec2-sg"
+    Name = "${var.name_prefix}-ec2-sg-md"
   }
 }

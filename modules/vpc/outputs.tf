@@ -37,3 +37,7 @@ output "route_table_private_id" {
 output "route_table_private_association_ids" {
   value = [aws_route_table_association.private_a.id, aws_route_table_association.private_b.id]
 }
+
+output "aws_security_group_nat_sg" {
+  value = aws_security_group.nat_sg.id
+}

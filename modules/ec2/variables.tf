@@ -33,3 +33,7 @@ variable "ec2_sg_md_egress_protocol" {}
 variable "ec2_sg_md_egress_cidr_blocks" {}
 
 variable "target_group_arns" {}
+
+variable "aws_security_group_nat_sg" {}
+
+variable "key_name" {}

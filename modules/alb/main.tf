@@ -65,8 +65,8 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_security_group" "ec2_sg" {
-  name        = "${var.name_prefix}-ec2-sg"
-  description = "Allow traffic from ALB to EC2"
+  name        = "${var.name_prefix}-ec2-sg-alb"
+  description = "Allow traffic from ALB to EC2 (ALB module)"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -86,7 +86,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   tags = {
-    Name = "${var.name_prefix}-ec2-sg"
+    Name = "${var.name_prefix}-ec2-sg-alb"
   }
 }
 

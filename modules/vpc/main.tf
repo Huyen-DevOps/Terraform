@@ -121,8 +121,20 @@ resource "aws_instance" "nat_instance" {
 
   user_data = <<-EOF
               #!/bin/bash
-              echo 1 > /proc/sys/net/ipv4/ip_forward
-              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+              echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+              sysctl -p
+
+              yum update -y
+              yum install -y iptables-services
+
+              # Enable NAT (Masquerading) for both private subnets
+              iptables -t nat -A POSTROUTING -o eth0 -s ${var.private_subnets[0]} -j MASQUERADE
+              iptables -t nat -A POSTROUTING -o eth0 -s ${var.private_subnets[1]} -j MASQUERADE
+
+              # Save iptables rules to persist after reboot
+              service iptables save
+              systemctl enable iptables
+              systemctl start iptables
               EOF
 
   tags = {
@@ -148,11 +160,18 @@ resource "aws_security_group" "nat_sg" {
     protocol        = "-1"
     cidr_blocks     = [var.private_subnets[0], var.private_subnets[1]]
   }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_route" "private_nat_route" {
   route_table_id         = aws_route_table.private.id
-  destination_cidr_block = "0.0.0.0/0"
+  destination_cidr_block = var.destination_cidr_block
   network_interface_id   = aws_instance.nat_instance.primary_network_interface_id
 
   depends_on = [aws_instance.nat_instance]

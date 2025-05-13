@@ -4,18 +4,6 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-variable "access_key" {
-  description = "AWS access key"
-  type        = string
-  default     = ""
-}
-
-variable "secret_key" {
-  description = "AWS secret key"
-  type        = string
-  default     = ""
-}
-
 variable "public_subnets" {
   description = "CIDR blocks for public subnets"
   type        = list(string)
@@ -367,7 +355,7 @@ variable "ec2_sg_md_egress_cidr_blocks" {
 variable "nat_instance_ami" {
   description = "AMI ID for the NAT instance"
   type        = string
-  default     = "ami-075686beab831bb7f"
+  default     = "ami-002265de0e3086eb8"
 }
 
 variable "key_name" {
@@ -375,3 +363,21 @@ variable "key_name" {
   type        = string
   default     = "nat-keypair"
 }
+
+# variable "db_name" {
+#   description = "Name of the database"
+#   type        = string
+#   default     = "mydb"
+# }
+#
+# variable "db_username" {
+#   description = "Username for the database"
+#   type        = string
+#   default     = "admin"
+# }
+#
+# variable "db_password" {
+#   description = "Password for the database"
+#   type        = string
+#   default     = "password@@123"
+# }

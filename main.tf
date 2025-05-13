@@ -16,9 +16,7 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.aws_region
-  access_key = var.access_key
-  secret_key = var.secret_key
+  region = var.aws_region
 }
 
 module "vpc" {
@@ -112,4 +110,18 @@ module "ec2" {
   ec2_sg_md_egress_to_port     = var.ec2_sg_md_egress_to_port
   ec2_sg_md_egress_protocol    = var.ec2_sg_md_egress_protocol
   ec2_sg_md_egress_cidr_blocks = var.ec2_sg_md_egress_cidr_blocks
+
+  aws_security_group_nat_sg = module.vpc.aws_security_group_nat_sg
+  key_name                  = var.key_name
 }
+
+# module "rds" {
+#   source                = "./modules/rds"
+#   vpc_id                = module.vpc.vpc_id
+#   private_subnets       = module.vpc.private_subnets
+#   ec2_security_group_id = module.ec2.ec2_sg_id
+#   db_name               = var.db_name
+#   db_username           = var.db_username
+#   db_password           = var.db_password
+#   name_prefix           = var.name_prefix
+# }
