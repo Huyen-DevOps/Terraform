@@ -3,7 +3,6 @@ resource "aws_launch_template" "web" {
   image_id      = var.ami_id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.ec2_sg_md.id]
-  key_name      = var.key_name
 
   user_data = base64encode(<<-EOF
               #!/bin/bash
@@ -52,13 +51,6 @@ resource "aws_security_group" "ec2_sg_md" {
     to_port     = 0
     protocol    = "-1"        # "all"
     cidr_blocks = ["10.0.1.0/24", "10.0.2.0/24"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [var.aws_security_group_nat_sg]
   }
 
   egress {

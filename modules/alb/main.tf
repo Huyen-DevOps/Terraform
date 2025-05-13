@@ -74,7 +74,7 @@ resource "aws_security_group" "ec2_sg" {
     to_port                  = var.ec2_sg_listener_to_port
     protocol                 = var.ec2_sg_listener_protocol
     security_groups          = [aws_security_group.alb_sg.id]
-    description              = "Allow HTTP from ALB"
+    description              = "Allow HTTP from ALB (ALB module)"
   }
 
   egress {
@@ -82,7 +82,7 @@ resource "aws_security_group" "ec2_sg" {
     to_port     = var.ec2_sg_egress_to_port
     protocol    = var.ec2_sg_egress_protocol
     cidr_blocks = var.ec2_sg_egress_cidr_blocks
-    description = "Allow all outbound traffic"
+    description = "Allow all outbound traffic (ALB module)"
   }
 
   tags = {

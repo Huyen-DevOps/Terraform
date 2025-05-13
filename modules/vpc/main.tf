@@ -144,7 +144,7 @@ resource "aws_instance" "nat_instance" {
 
 resource "aws_security_group" "nat_sg" {
   name        = "${var.name_prefix}-nat-sg"
-  description = "Allow outbound traffic"
+  description = "Allow outbound traffic  (VPC module)"
   vpc_id      = aws_vpc.main.id
 
   egress {
@@ -159,13 +159,6 @@ resource "aws_security_group" "nat_sg" {
     to_port         = 0
     protocol        = "-1"
     cidr_blocks     = [var.private_subnets[0], var.private_subnets[1]]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
