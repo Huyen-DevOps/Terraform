@@ -26,22 +26,25 @@
   - [ ] An Internet Gateway for public subnets.
   - [ ] Route tables for public and private subnets.
   - [ ] Proper route table associations.
+  - [ ] NAT instance for private subnets.
 
 ## 3. ALB Module
 - [ ] Create a `modules/alb` directory.
 - [ ] Deploy an Application Load Balancer (ALB) in public subnets.
 - [ ] Configure ALB to forward traffic to EC2 instances.
+- [ ] Configure health checks for the target group.
+- [ ] Create and attach Security Groups for ALB and EC2.
 
 ## 4. EC2 Module
 - [ ] Create a `modules/ec2` directory.
-- [ ] Deploy 2 EC2 instances in private subnets.
-- [ ] Use Amazon Linux AMI and install a web server (nginx or apache).
-- [ ] Optionally configure an Auto Scaling Group.
+- [ ] Deploy 2 EC2 instances in private subnets using a Launch Template and Auto Scaling Group.
+- [ ] Use Amazon Linux AMI and install a web server (nginx).
+- [ ] Ensure EC2 Security Group allows traffic from ALB Security Group.
 
 ## 5. RDS Module
 - [ ] Create a `modules/rds` directory.
 - [ ] Deploy an RDS MySQL database in private subnets.
-- [ ] Ensure only EC2 instances can access the database.
+- [ ] Ensure only EC2 instances can access the database (via Security Group).
 
 ## 6. Variables
 - [ ] Define variables in `variables.tf` for:
@@ -53,7 +56,7 @@
 
 ## 7. Outputs
 - [ ] Define outputs in `outputs.tf` for:
-  - [ ] ALB public IP.
+  - [ ] ALB DNS name.
   - [ ] RDS endpoint.
   - [ ] Other relevant information.
 
@@ -65,10 +68,11 @@
 ## 9. Testing and Validation
 - [ ] Run `terraform init`, `terraform plan`, and `terraform apply` to deploy the infrastructure.
 - [ ] Verify:
-  - [ ] ALB is accessible via its public IP.
+  - [ ] ALB is accessible via its DNS name.
   - [ ] EC2 instances are running and serving web traffic.
   - [ ] RDS is accessible only from EC2 instances.
 
 ## 10. Documentation
 - [ ] Document the project setup and usage in a `README.md` file.
+- [ ] Provide code examples and module usage in each module's `README.md`.
 

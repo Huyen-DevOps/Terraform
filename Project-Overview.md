@@ -1,4 +1,3 @@
-
 # Mini Project: Deploying a 3-Tier Infrastructure on AWS Using Terraform
 
 ## Objective
@@ -31,15 +30,18 @@ terraform-3tier-project/
 
 ## What You'll Implement
 
-| **Component** | **Description**                                                            |
-|---------------|----------------------------------------------------------------------------|
-| **VPC**       | Create a custom VPC, 2 Availability Zones, 4 subnets, route tables         |
-| **ALB**       | Public-facing Load Balancer forwarding traffic to EC2 instances            |
-| **EC2**       | 2 instances using Amazon Linux AMI, running a web server (nginx or apache) |
-| **RDS**       | MySQL DB in private subnet, secured so only EC2 instances can access it    |
-| **Modules**   | Split configurations into `modules/vpc`, `modules/ec2`, etc.               |
-| **Variables** | Use variables for AMI, region, instance_type, DB password, etc.            |
-| **Outputs**   | Output ALB public IP, RDS endpoint, etc.                                   |
+| **Component**     | **Description**                                                                                                            |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------|
+| **VPC**           | Create a custom VPC, 2 Availability Zones, 4 subnets, route tables, 1 Public instance using Amazon Linux AMI               |
+| **ALB**           | Public-facing Load Balancer forwarding traffic to EC2 instances                                                            |
+| **EC2**           | 2 instances using Ubuntu AMI, running a web server (nginx) in private subnets, optionally managed by an Auto Scaling Group |
+| **RDS**           | MySQL DB in private subnet, secured so only EC2 instances can access it                                                    |
+| **Modules**       | Split configurations into `modules/vpc`, `modules/ec2`, etc.                                                               |
+| **Variables**     | Use variables for AMI, region, instance_type, DB password, etc.                                                            |
+| **Outputs**       | Output ALB DNS name, RDS endpoint, etc.                                                                                    |
+| **Security**      | Security Groups for ALB, EC2, and RDS, with correct ingress/egress rules                                                   |
+| **Testing**       | Validate infrastructure by accessing ALB and verifying connectivity                                                        |
+| **Documentation** | Provide clear documentation and usage instructions                                                                         |
 
 ---
 
@@ -50,3 +52,7 @@ terraform-3tier-project/
 - AWS networking: VPC, subnets, route tables
 - Integrating services: ALB → EC2 → RDS
 - Writing reusable infrastructure code
+- Using variables and outputs for modularity
+- Applying security best practices with Security Groups
+- Testing and validating AWS infrastructure
+
