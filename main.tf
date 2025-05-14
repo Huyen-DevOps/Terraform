@@ -92,6 +92,7 @@ module "ec2" {
   source                = "./modules/ec2"
   ami_id                = var.ami_id
   instance_type         = var.instance_type
+  public_subnets        = var.public_subnets
   private_subnets       = module.vpc.private_subnets
   vpc_id                = module.vpc.vpc_id
   alb_security_group_id = module.alb.alb_security_group_id
@@ -111,17 +112,33 @@ module "ec2" {
   ec2_sg_md_egress_protocol    = var.ec2_sg_md_egress_protocol
   ec2_sg_md_egress_cidr_blocks = var.ec2_sg_md_egress_cidr_blocks
 
-  aws_security_group_nat_sg = module.vpc.aws_security_group_nat_sg
-  key_name                  = var.key_name
+  rds_address = module.rds.rds_address
+  db_username = var.db_username
+  db_password = var.db_password
 }
 
-# module "rds" {
-#   source                = "./modules/rds"
-#   vpc_id                = module.vpc.vpc_id
-#   private_subnets       = module.vpc.private_subnets
-#   ec2_security_group_id = module.ec2.ec2_sg_id
-#   db_name               = var.db_name
-#   db_username           = var.db_username
-#   db_password           = var.db_password
-#   name_prefix           = var.name_prefix
-# }
+module "rds" {
+  source                = "./modules/rds"
+  vpc_id                = module.vpc.vpc_id
+  private_subnets       = module.vpc.private_subnets
+  ec2_security_group_id = module.ec2.ec2_sg_id
+
+  db_name              = var.db_name
+  db_username          = var.db_username
+  db_password          = var.db_password
+  parameter_group_name = var.parameter_group_name
+  name_prefix          = var.name_prefix
+  engine               = var.engine
+  engine_version       = var.engine_version
+  instance_class       = var.instance_class
+  allocated_storage    = var.allocated_storage
+
+  rds_ingress_from_port = var.rds_ingress_from_port
+  rds_ingress_to_port   = var.rds_ingress_to_port
+  rds_ingress_protocol  = var.rds_ingress_protocol
+
+  rds_egress_from_port   = var.rds_egress_from_port
+  rds_egress_to_port     = var.rds_egress_to_port
+  rds_egress_protocol    = var.rds_egress_protocol
+  rds_egress_cidr_blocks = var.rds_egress_cidr_blocks
+}

@@ -34,6 +34,10 @@ variable "ec2_sg_md_egress_cidr_blocks" {}
 
 variable "target_group_arns" {}
 
-variable "aws_security_group_nat_sg" {}
+variable "public_subnets" {}
 
-variable "key_name" {}
+variable "rds_address" {}
+
+variable "db_username" {}
+
+variable "db_password" {}

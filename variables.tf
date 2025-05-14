@@ -364,20 +364,92 @@ variable "key_name" {
   default     = "nat-keypair"
 }
 
-# variable "db_name" {
-#   description = "Name of the database"
-#   type        = string
-#   default     = "mydb"
-# }
-#
-# variable "db_username" {
-#   description = "Username for the database"
-#   type        = string
-#   default     = "admin"
-# }
-#
-# variable "db_password" {
-#   description = "Password for the database"
-#   type        = string
-#   default     = "password@@123"
-# }
+variable "engine" {
+  description = "Database engine to use"
+  type        = string
+  default     = "mysql"
+}
+
+variable "engine_version" {
+  description = "Database engine version to use"
+  type        = string
+  default     = "8.0.41"
+}
+
+variable "db_name" {
+  description = "Name of the database"
+  type        = string
+  default     = "mydb"
+}
+
+variable "db_username" {
+  description = "Username for the database"
+  type        = string
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "Password for the database"
+  type        = string
+  default     = "password123"
+}
+
+variable "parameter_group_name" {
+  description = "Parameter group name for the RDS instance"
+  type        = string
+  default     = "default.mysql8.0"
+}
+
+variable "instance_class" {
+  description = "Instance class for the RDS instance"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "allocated_storage" {
+  description = "Allocated storage for the RDS instance"
+  type        = number
+  default     = 20
+}
+
+variable "rds_ingress_from_port" {
+  description = "Starting port for the RDS security group listener"
+  type        = number
+  default     = 3306
+}
+
+variable "rds_ingress_to_port" {
+  description = "Ending port for the RDS security group listener"
+  type        = number
+  default     = 3306
+}
+
+variable "rds_ingress_protocol" {
+  description = "Protocol for the RDS security group listener"
+  type        = string
+  default     = "tcp"
+}
+
+variable "rds_egress_from_port" {
+  description = "Starting port for the RDS security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "rds_egress_to_port" {
+  description = "Ending port for the RDS security group egress"
+  type        = number
+  default     = 0
+}
+
+variable "rds_egress_protocol" {
+  description = "Protocol for the RDS security group egress"
+  type        = string
+  default     = "-1"
+}
+
+variable "rds_egress_cidr_blocks" {
+  description = "CIDR blocks for the RDS security group egress"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}

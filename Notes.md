@@ -51,18 +51,21 @@ Make sure the security groups and network ACLs allow the required traffic.
 
 ---
 
-Luồng truy cập Internet từ EC2 private
-EC2 A (10.0.2.10) gửi request đến google.com.
+## Luồng truy cập Internet từ EC2 private
 
-Routing table của subnet private trỏ về NAT instance như default gateway.
+- EC2 A (10.0.2.10) gửi request đến google.com.
+- Routing table của subnet private trỏ về NAT instance như default gateway.
+- Gói tin đến NAT instance qua interface eth1 (private IP).
+- iptables (POSTROUTING MASQUERADE) thay đổi IP nguồn thành public IP của NAT.
+- NAT instance gửi gói ra Internet qua eth0.
+- Google trả lời về địa chỉ public IP của NAT.
+- NAT instance nhận gói trả lời, dịch ngược (DNAT) và chuyển trả lại EC2 A.
 
-Gói tin đến NAT instance qua interface eth1 (private IP).
+---
 
-iptables (POSTROUTING MASQUERADE) thay đổi IP nguồn thành public IP của NAT.
-
-NAT instance gửi gói ra Internet qua eth0.
-
-Google trả lời về địa chỉ public IP của NAT.
-
-NAT instance nhận gói trả lời, dịch ngược (DNAT) và chuyển trả lại EC2 A.
-                    
+## Để Terraform destroy rồi create lại resource
+- **Recommendation:** Sử dụng `-target` để chỉ định resource cụ thể mà bạn muốn destroy và sau đó apply lại.
+```bash`
+- terraform destroy -target <resource_type>.<resource_name> -target <resource_type2>.<resource_name2>
+- terraform apply
+```

@@ -11,6 +11,10 @@ resource "aws_launch_template" "web" {
               sudo systemctl start nginx
               sudo systemctl enable nginx
               echo "Hello from EC2 instance" > /var/www/html/index.html
+              sudo apt-get install mysql-client -y
+              echo "== START MYSQL CHECK ==" >> /var/www/html/index.html
+              MYSQL_PWD='${var.db_password}' mysql -h ${var.rds_address} -u ${var.db_username} -e "SHOW DATABASES;" >> /var/www/html/index.html 2>&1
+              echo "== END MYSQL CHECK ==" >> /var/www/html/index.html
               EOF
   )
 }
@@ -50,7 +54,7 @@ resource "aws_security_group" "ec2_sg_md" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"        # "all"
-    cidr_blocks = ["10.0.1.0/24", "10.0.2.0/24"]
+    cidr_blocks = var.public_subnets
   }
 
   egress {
